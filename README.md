@@ -39,3 +39,88 @@ To submit a solution, fork this repo and send a Pull Request on Github.
 For any questions or clarifications, raise an issue on this repo and we'll answer your questions as fast as we can.
 
 
+# Working of the code 
+1. Run the code by executing the following command "go run main.go"
+2. The code has not been implemented to handle the short forms of the location
+3. Inputs - There are 4 endpoints    
+    a. /all-distributors - Which return all the distributors
+    The Curl command for the same is - "curl -X GET http://localhost:8080/all-distributors"
+
+    b. /add-distributors - Which will help us to add a new distributor
+    The Curl command for the same is -
+            curl -X POST -H "Content-Type: application/json" -d '{
+                "DistriburtorID": 1,
+                "DistributorLocation": {
+                   "Include": [
+                     {
+                       "Country": "INDIA",
+                       "Province": "",
+                       "City": ""
+                     },
+                     {
+                       "Country": "UNITED STATES",
+                       "Province": "",
+                       "City": ""
+                     }
+                   ],
+                   "Exclude": [
+                     {
+                       "Country": "INDIA",
+                       "Province": "KARNATAKA",
+                       "City": ""
+                     },
+                     {
+                       "Country": "INDIA",
+                       "Province": "TAMIL NADU",
+                       "City": "CHENNAI"
+                     }
+                   ]
+                 }
+               }' http://localhost:8080/add-distributors
+
+
+    c. /add-sub-distributors - Add the sub-distributor for the main distributor
+       The Curl command for the same is -
+            curl -X POST -H "Content-Type: application/json" -d '{
+            "SubDistriburtorID": 1,
+            "Distributor": {
+              "DistriburtorID": 456,
+              "DistributorLocation": {
+                "Include": [
+                  {
+                    "Country": "USA",
+                    "Province": "NY",
+                    "City": "New York"
+                  },
+                  {
+                    "Country": "USA",
+                    "Province": "CA",
+                    "City": "Los Angeles"
+                  },
+          			{
+                    "Country": "INDIA",
+                    "Province": "CA",
+                    "City": "Los Angeles"
+                  }
+                ],
+                "Exclude": [
+                  {
+                    "Country": "USA",
+                    "Province": "TX",
+                    "City": "Dallas"
+                  }
+                ]
+              }
+            }
+          }' http://localhost:8080/add-sub-distributors
+    
+    d. /check-permission - Checks the permissions of the distributor
+        The Curl command for the same is -
+        curl -X GET -H "Content-Type: application/json" -d '{
+          "DistriburtorID": 1,
+          "DistributorLocation": {
+            "Country": "India",
+            "Province": "Tamil Nadu",
+            "City": "Udumalaippettai"
+          }
+        }' http://localhost:8080/check-permission
